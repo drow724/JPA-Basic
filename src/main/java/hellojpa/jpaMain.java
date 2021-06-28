@@ -15,12 +15,10 @@ public class jpaMain {
 		tx.begin();
 		
 		try {
-			Member member = new Member();
+			Member findMember = em.find(Member.class, 1L);
+			System.out.println("findMember.id = " + findMember.getId());
+			System.out.println("findMember.name = " +findMember.getName());
 			
-			member.setId(2L);
-			member.setName("HelloB");
-			
-			em.persist(member);
 			tx.commit();
 		} catch (Exception e) {
 			tx.rollback();
