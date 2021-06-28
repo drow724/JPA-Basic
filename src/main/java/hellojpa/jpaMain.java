@@ -16,8 +16,7 @@ public class jpaMain {
 		
 		try {
 			Member findMember = em.find(Member.class, 1L);
-			
-			em.remove(findMember);
+			findMember.setName("HelloJPA");
 			
 			tx.commit();
 		} catch (Exception e) {
