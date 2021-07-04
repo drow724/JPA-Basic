@@ -20,15 +20,12 @@ public class jpaMain {
 		try {
 			
 			//영속
-			Member member = em.find(Member.class, 150L);
-			member.setName("ZZZZ");
-			
-			if(member.getName().equals("ZZZZZ")) {
-				em.update(member);
-			}
+			Member member = new Member(200L, "member200");
+			em.persist(member);
 
-			System.out.println("==========================");
+			em.flush();
 			
+			System.out.println("==========================");
 			tx.commit();
 		} catch (Exception e) {
 			tx.rollback();
