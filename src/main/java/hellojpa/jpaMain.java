@@ -1,7 +1,5 @@
 package hellojpa;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -20,10 +18,12 @@ public class jpaMain {
 		try {
 			
 			//영속
-			Member member = new Member(200L, "member200");
-			em.persist(member);
-
-			em.flush();
+			Member member = em.find(Member.class, 150L);
+			member.setName("AAAAA");
+			
+			em.clear();
+			
+			Member member2 = em.find(Member.class, 150L);
 			
 			System.out.println("==========================");
 			tx.commit();
