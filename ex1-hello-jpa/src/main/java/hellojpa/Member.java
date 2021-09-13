@@ -20,9 +20,9 @@ public class Member {
 	private String userName;
 
 	@ManyToOne
-	@JoinColumn(name = "TEAM_ID")
+	@JoinColumn(name = "TEAM", insertable = false, updatable = false)
 	private Team team;
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -39,23 +39,9 @@ public class Member {
 		this.userName = userName;
 	}
 
-	public Team getTeam() {
-		return team;
-	}
-
-	public void changeTeam(Team team) {
-		this.team = team;
-		
-		team.getMembers().add(this);
-	}
-
-	public void setTeam(Team team) {
-		this.team = team;
-	}
-
 	@Override
 	public String toString() {
-		return "Member [id=" + id + ", userName=" + userName + ", team=" + team + "]";
+		return "Member [id=" + id + ", userName=" + userName + "]";
 	}
 	
 	
