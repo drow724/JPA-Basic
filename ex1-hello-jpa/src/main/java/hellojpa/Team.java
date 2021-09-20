@@ -21,7 +21,7 @@ public class Team extends BaseEntity {
 	private String name;
 
 	@OneToMany
-//	@JoinColumn(name = "TEAM_ID")
+	@JoinColumn(name = "TEAM_ID")
 	private List<Member> members = new ArrayList<>();
 
 	public Long getId() {
