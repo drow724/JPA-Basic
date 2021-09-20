@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ORDERS")
-public class Order {
+public class Order extends BaseEntity {
 	
 	@Id
 	@GeneratedValue
@@ -32,9 +32,6 @@ public class Order {
 	@OneToOne
 	@JoinColumn(name = "DELIVERY_ID")
 	private Delivery delivery;
-
-	@OneToMany(mappedBy = "order")
-	private List<OrderItem> orderItems = new ArrayList<>();
 	
 	private LocalDateTime orderDate;
 	
@@ -71,13 +68,6 @@ public class Order {
 
 	public void setStatus(OrderStatus status) {
 		this.status = status;
-	}
-
-	public void addOrderItem(OrderItem orderItem) {
-
-		orderItems.add(orderItem);
-		orderItem.setOrder(this);
-		
 	}
 	
 	
