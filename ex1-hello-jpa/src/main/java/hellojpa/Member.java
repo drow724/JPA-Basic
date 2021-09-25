@@ -1,15 +1,15 @@
 package hellojpa;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Entity
-public class Member extends BaseEntity {
+public class Member {
 	
 	@Id
 	@GeneratedValue
@@ -19,10 +19,26 @@ public class Member extends BaseEntity {
 	@Column(name = "USERNAME")
 	private String userName;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn
-	private Team team;
+	//기간 Period
+	@Embedded
+	private Period workPeriod;
+	
+	//주소 Adress
+	@Embedded
+	private Adress homeAdress;
 
+	//주소 Adress
+	@Embedded
+	@AttributeOverrides({
+			@AttributeOverride(name = "city",
+					column = @Column(name = "WORK_CITY")),
+			@AttributeOverride(name = "street",
+					column = @Column(name = "WORK_STREET")),
+			@AttributeOverride(name = "zipcode",
+					column = @Column(name = "WORK_ZIPCODE"))
+	})
+	private Adress workAdress;
+	
 	public Long getId() {
 		return id;
 	}
@@ -39,19 +55,20 @@ public class Member extends BaseEntity {
 		this.userName = userName;
 	}
 
-	@Override
-	public String toString() {
-		return "Member [id=" + id + ", userName=" + userName + "]";
+	public Period getWorkPeriod() {
+		return workPeriod;
 	}
 
-	public Team getTeam() {
-		return team;
+	public void setWorkPeriod(Period workPeriod) {
+		this.workPeriod = workPeriod;
 	}
 
-	public void setTeam(Team team) {
-		this.team = team;
+	public Adress getHomeAdress() {
+		return homeAdress;
 	}
-	
-	
+
+	public void setHomeAdress(Adress homeAdress) {
+		this.homeAdress = homeAdress;
+	}
 	
 }

@@ -6,8 +6,7 @@ public class ValueMain {
 		
 		Integer a = new Integer(10);
 		Integer b = a;
-		
-		a.setValue(b);
+	
 		
 		System.out.println("a = " + a);
 		System.out.println("b = " + b);
