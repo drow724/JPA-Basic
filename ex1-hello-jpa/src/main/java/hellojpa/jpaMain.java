@@ -17,12 +17,15 @@ public class jpaMain {
 		
 		try {
 			
-			Member member = new Member();
-			member.setUserName("hello");
-			member.setHomeAdress(new Adress("city", "street","10000" ));
-			member.setWorkPeriod(new Period());
+			Adress adress = new Adress("city", "street","10000");
 			
+			Member member = new Member();
+			member.setUserName("member1");
+			member.setHomeAdress(adress);
 			em.persist(member);
+
+			Adress adress2 = new Adress(adress.getCity(), adress.getStreet(),adress.getZipcode());
+			member.setHomeAdress(adress2);
 			
 			tx.commit();
 			
