@@ -15,11 +15,53 @@ public class Delivery extends BaseEntity {
 	@GeneratedValue
 	private Long id;
 	
-	private String city;
-	private String street;
-	private String zipcode;
 	private DelivertStatus status;
 	
 	@OneToOne(mappedBy = "delivery", fetch = LAZY)
 	private Order order;
+
+	/**
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public DelivertStatus getStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(DelivertStatus status) {
+		this.status = status;
+	}
+
+	/**
+	 * @return the order
+	 */
+	public Order getOrder() {
+		return order;
+	}
+
+	/**
+	 * @param order the order to set
+	 */
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+	
+	
+	
 }
