@@ -6,18 +6,18 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class Adress {
+public class Address {
 
 	private String city;
 	private String street;
 	@Column(name = "ZIPCODE")
 	private String zipcode;
 	
-	public Adress() {
+	public Address() {
 
 	}
 	
-	public Adress(String city, String street, String zipcode) {
+	public Address(String city, String street, String zipcode) {
 		super();
 		this.city = city;
 		this.street = street;
@@ -61,7 +61,7 @@ public class Adress {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Adress other = (Adress) obj;
+		Address other = (Address) obj;
 		return Objects.equals(city, other.city) && Objects.equals(street, other.street)
 				&& Objects.equals(zipcode, other.zipcode);
 	}
