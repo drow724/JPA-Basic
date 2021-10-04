@@ -1,7 +1,6 @@
 package hellojpa;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -22,37 +21,65 @@ public class jpaMain {
 			
 			Member member = new Member();
 			member.setUserName("member1");
-			member.setHomeAddress(new Address("homeCity", "street", "10000"));
-			
-			member.getFavoriteFoods().add("치킨");
-			member.getFavoriteFoods().add("족발");
-			member.getFavoriteFoods().add("피자");
-			
-			member.getAddressHistory().add(new AddressEntity("old1", "street", "10000"));
-			member.getAddressHistory().add(new AddressEntity("old2", "street", "10000"));
-			
 			em.persist(member);
-
+			
+			//flush -> commit, query
+			
 			em.flush();
-			em.clear();
+			//결과 0
+			//dbconn.executeQuert("select * from member");
 			
-			System.out.println("===========start=============");
-			Member findMember = em.find(Member.class, member.getId());
+			List<Member> resultList = em.createNativeQuery("select MEMBER_ID, city, street, zipcode, USERNAME from MEMBER", Member.class)
+					.getResultList();
 			
-			//homeCity = nowCity
-			// findMember.getHomeAddress().setCity("newCity);
-			Address a = findMember.getHomeAddress();
-			findMember.setHomeAddress(new Address("newCity", a.getStreet(), a.getZipcode()));
+			for (Member member1 : resultList) {
+				System.out.println("member1 = " + member1);
+			}
 			
-			//치킨 -> 한식
-			findMember.getFavoriteFoods().remove("치킨");
-			findMember.getFavoriteFoods().add("한식");
+//			String sql =
+//					 "SELECT ID, AGE, TEAM_ID, NAME FROM MEMBER WHERE NAME = 'kim'";
+//			
+//			List<Member> resultList =
+//					 em.createNativeQuery(sql, Member.class).getResultList();
 			
-			//equals가 제대로 구현되어 있어야 함.
-			findMember.getAddressHistory().remove(new AddressEntity("old1", "street", "10000"));
-			findMember.getAddressHistory().add(new AddressEntity("newCity", "street", "10000"));
+//			//JPQL
+//			//select m from Member m where m.age > 18
+//
+//			JPAFactoryQuery query = new JPAQueryFactory(em);
+//			
+//			QMember m = QMember.member; 
+//			
+//			List<Member> list =
+//					 query.selectFrom(m)
+//					 .where(m.age.gt(18))
+//					 .orderBy(m.name.desc())
+//					 .fetch();
+			
+//			//Criteria 사용 준비
+//			CriteriaBuilder cb = em.getCriteriaBuilder();
+//			CriteriaQuery<Member> query = cb.createQuery(Member.class);
+//			
+//			//루트 클래스 (조회를 시작할 클래스)
+//			Root<Member> m = query.from(Member.class);
+//			
+//			//쿼리 생성
+//			CriteriaQuery<Member> cq =
+//			query.select(m).where(cb.equal(m.get("username"), "kim"));
+//			List<Member> resultList = em.createQuery(cq).getResultList();
+//			
+//			String username = "dfsafd";
+//			if (username != null) {
+//				cq = cq.where(cb.equal(m.get("username"), "kim"));
+//			}
+//			
+//			// ↑ 실무에서 사용하지 않음 (유지보수의 어려움)
+			
+//			List<Member> result = em.createQuery(
+//					"select m From Member m where m.username like '%kim%'",
+//					Member.class
+//					).getResultList();
+			
 			tx.commit();
-			
 		} catch (Exception e) {
 			
 			tx.rollback();
