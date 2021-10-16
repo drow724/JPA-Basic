@@ -25,37 +25,42 @@ public class JpaMain {
 			member.setUsername("member1");
 			member.setAge(10);
 			em.persist(member);
-			
-			//타입 정보가 명확	
-//			TypedQuery<Member> query1 = em.createQuery("select m from Member m", Member.class);
-//			TypedQuery<String> query2 = em.createQuery("select m.username from Member m", String.class);
-			
-			//타입 정보 불명확
-//			Query query3 = em.createQuery("select m.username, m.age from Member m");
-			
-//			TypedQuery<Member> query = em.createQuery("select m from Member m", Member.class);
-//			List<Member> resultList = query.getResultList();
-//			
-//			for(Member member1 : resultList) {
-//				System.out.println("member 1 =" + member1);
-//			}
-			
-//			TypedQuery<Member> query = em.createQuery("select m from Member m where m.id = 10L", Member.class);
-//			
-//			Member result = query.getSingleResult();
-//			//Spring Data Jpa -> 
-//			System.out.println("result = " + result);
-			
-//			TypedQuery<Member> query = em.createQuery("select m from Member m where m.username = :username", Member.class);
-//			query.setParameter("username", "member1");
-//			Member singleResult = query.getSingleResult();
-//			System.out.println("singleResult = " + singleResult.getUsername());
 
-			Member result = em.createQuery("select m from Member m where m.username = :username", Member.class)
-			.setParameter("username", "member1")
-			.getSingleResult();
+			em.flush();
+			em.clear();
 			
-			System.out.println("singleResult = " + result.getUsername());
+//			List<Member> result = em.createQuery("select m from Member m", Member.class)
+//			.getResultList();
+//			
+//			Member findMember = result.get(0);
+//			findMember.setAge(0);
+			
+			//엔티티 프로젝션
+//			List<Team> result = em.createQuery("select t from Member m join m.team t", Team.class)
+//			.getResultList();
+
+			//임베디드 프로젝션
+//			List<Address> result = em.createQuery("select o.address from Order o", Address.class)
+//			.getResultList();
+			
+			//스칼라타입 프로젝션
+//			em.createQuery("select m.username, m.age from Member m")
+//					.getResultList();
+			
+//			List resultList = em.createQuery("select m.username, m.age from Member m")
+//			.getResultList();
+//			
+//			Object o = resultList.get(0);
+//			Object[] result = (Object[]) o;
+//			System.out.println("username = " + result[0]);
+//			System.out.println("age = " + result[1]);
+			
+			List<MemberDTO> result = em.createQuery("select new jpql.MemberDTO(m.username, m.age) from Member m", MemberDTO.class)
+			.getResultList();
+			
+			MemberDTO memberDTO =  result.get(0);
+			System.out.println("memberDTO = " + memberDTO.getUsername());
+			System.out.println("memberDTO = " + memberDTO.getAge());
 			
 			tx.commit();
 			
