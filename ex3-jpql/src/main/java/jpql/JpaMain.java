@@ -28,31 +28,32 @@ public class JpaMain {
 			Member member = new Member();
 			member.setUsername("member1");
 			member.setAge(10);
+			member.setType(MemberType.ADMIN);
 			
 			em.persist(member);
 		
 			em.flush();
 			em.clear();
-			
-			//select join
-			
-//			String query = "select (select avg(m1.age) from Member m1) as avgAge from Member m join Team t on m.username = t.name";
-//			List<Member> result = em.createQuery(query, Member.class)
-//			.setFirstResult(1)
-//			.setMaxResults(10)
-//			.getResultList();
-			
-			//from join
 
-			//지원안함
-			//join으로 풀어야 함 (native 쿼리로 풀어야 함)
-			String query = "select mm.age, mm.username"
-							+ " from (select m.age, m.username from Member m) as mm";
-			List<Member> result = em.createQuery(query, Member.class)
-			.setFirstResult(1)
-			.setMaxResults(10)
+//			String query = "select m.username, 'HELLO', true from Member m where m.type = jpql.MemberType.ADMIN";
+//			String query = "select m.username, 'HELLO', true from Member m where m.type = :userType";
+			
+//			String query = "select m.username, 'HELLO', true from Member m where m.username is not null";
+			String query = "select m.username, 'HELLO', true from Member m where m.age between 0 and 10 ";
+			
+			List<Object[]> result = em.createQuery(query)
+			.setParameter("userType", MemberType.ADMIN)
 			.getResultList();
+			
+			for (Object[] object : result) {
+				System.out.println("object = " + object[0] );
+				System.out.println("object = " + object[1] );
+				System.out.println("object = " + object[2] );
+			}
+			
 			tx.commit();
+			
+			
 			
 		} catch (Exception e) {
 			
