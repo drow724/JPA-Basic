@@ -17,6 +17,7 @@ public class Team {
 	
 	@OneToMany(mappedBy = "team")
 	private List<Member> members = new ArrayList<>();
+	
 	/**
 	 * @return the id
 	 */
@@ -40,6 +41,18 @@ public class Team {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	/**
+	 * @return the members
+	 */
+	public List<Member> getMembers() {
+		return members;
+	}
+	/**
+	 * @param members the members to set
+	 */
+	public void setMembers(List<Member> members) {
+		this.members = members;
 	}
 	
 }
