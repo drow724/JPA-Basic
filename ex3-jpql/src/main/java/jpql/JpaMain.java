@@ -34,46 +34,24 @@ public class JpaMain {
 			em.flush();
 			em.clear();
 			
-//			inner join
+			//select join
 			
-//			String query = "select m from Member m inner join m.team t";
-//			List<Member> result = em.createQuery(query, Member.class)
-//			.setFirstResult(1)
-//			.setMaxResults(10)
-//			.getResultList();
-	
-//			outer join
-			
-//			String query = "select m from Member m left outer join m.team t";
+//			String query = "select (select avg(m1.age) from Member m1) as avgAge from Member m join Team t on m.username = t.name";
 //			List<Member> result = em.createQuery(query, Member.class)
 //			.setFirstResult(1)
 //			.setMaxResults(10)
 //			.getResultList();
 			
-//			세타 조인
-			
-//			String query = "select m from Member m, Team t where m.username = t.name";
-//			List<Member> result = em.createQuery(query, Member.class)
-//			.setFirstResult(1)
-//			.setMaxResults(10)
-//			.getResultList();
-	
-//			조인 대상 필터링
-			
-//			String query = "select m from Member m left join m.team t on t.name = 'teamA'";
-//			List<Member> result = em.createQuery(query, Member.class)
-//			.setFirstResult(1)
-//			.setMaxResults(10)
-//			.getResultList();
+			//from join
 
-//			연관관계 없는 엔티티 외부 조인
-			
-			String query = "select m from Member m left join Team t on m.username = t.name";
+			//지원안함
+			//join으로 풀어야 함 (native 쿼리로 풀어야 함)
+			String query = "select mm.age, mm.username"
+							+ " from (select m.age, m.username from Member m) as mm";
 			List<Member> result = em.createQuery(query, Member.class)
 			.setFirstResult(1)
 			.setMaxResults(10)
 			.getResultList();
-			
 			tx.commit();
 			
 		} catch (Exception e) {
