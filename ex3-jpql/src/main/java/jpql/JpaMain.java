@@ -45,56 +45,15 @@ public class JpaMain {
 			
 			em.flush();
 			em.clear();
-			
-			//fetch join alias 금지
-//			String query = 	"select t from Team t join fetch t.members m where m.age > 10" ;
-//			
-//			List<Team> result = em.createQuery(query, Team.class)
-//			.getResultList();
-//			
-//			for(Team team : result) {
-//				System.out.println("member = " + team.getName() + ", " + team.getMembers().size());
-//				for(Member member : team.getMembers()) {
-//					System.out.println("member = " + member);
-//				}
-//			}
-			
-			//alias를 사용하는 방법
-//			String query = 	"select t from Team t join fetch t.members m join fetch m.team" ;
-//			
-//			List<Team> result = em.createQuery(query, Team.class)
-//			.getResultList();
-//			
-//			for(Team team : result) {
-//				System.out.println("member = " + team.getName() + ", " + team.getMembers().size());
-//				for(Member member : team.getMembers()) {
-//					System.out.println("member = " + member);
-//				}
-//			}
-			
-			//컬렉션 페치 조인시 페이징 API 사용 금지
-//			String query = 	"select t from Team t join fetch t.members m" ;
-//			
-//			List<Team> result = em.createQuery(query, Team.class)
-//					.setFirstResult(0)
-//					.setMaxResults(1)
-//					.getResultList();
-//			
-//			for(Team team : result) {
-//				System.out.println("member = " + team.getName() + ", " + team.getMembers().size());
-//				for(Member member : team.getMembers()) {
-//					System.out.println("member = " + member);
-//				}
-//			}
-			
-			//다대일로 쿼리를 짜서 페이징 API 사용
-//			String query = 	"select m from Member m join fetch m.team t" ;
 
-			//Team 엔티티에서 members 콜렉션에 batchsize 어노테이션 지정
-			//persistence.xml의 batchsize 지정
-//			String query = 	"select t from Team t" ;
-
-			String query = 	"select t from Team t" ;
+			//TYPE
+			//조회 대상을 특정 자식으로 한정
+//			String query = 	"select i from Item i where type(i) IN (Book, Movie)" ;
+			
+			//TREAT
+			//상속 구조에서 부모 타입을 특정 자식 타입으로 다룰 때 사용
+			String query = 	"select i from Item i where treat(i as Book).auther = ‘kim’"
+					+ "" ;
 			
 			List<Team> result = em.createQuery(query, Team.class)
 					.setFirstResult(0)
