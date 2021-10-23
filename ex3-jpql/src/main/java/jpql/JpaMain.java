@@ -46,32 +46,8 @@ public class JpaMain {
 			em.flush();
 			em.clear();
 			
-//			String query = 	"select m from Member m" ;
-//			
-//			List<Member> result = em.createQuery(query, Member.class)
-//			.getResultList();
-//			
-//			for(Member member : result) {
-//				System.out.println("member = " + member.getUsername() + ", " + member.getTeam().getName());
-//				//회원1, 팀A(SQL);
-//				//회원2, 팀A(1차캐시);
-//				//회원3, 팀B(SQL);
-//				
-//				//모든 회원들의 팀이 다를경우
-//				//회원 100명 -> N + 1;
-//			}
-			
-//			String query = 	"select m from Member m join fetch m.team" ;
-//			
-//			List<Member> result = em.createQuery(query, Member.class)
-//			.getResultList();
-//			
-//			for(Member member : result) {
-//				System.out.println("member = " + member.getUsername() + ", " + member.getTeam().getName());
-//			}
-			
-//			//중복된 결과
-//			String query = 	"select t from Team t join fetch t.members" ;
+			//fetch join alias 금지
+//			String query = 	"select t from Team t join fetch t.members m where m.age > 10" ;
 //			
 //			List<Team> result = em.createQuery(query, Team.class)
 //			.getResultList();
@@ -83,7 +59,8 @@ public class JpaMain {
 //				}
 //			}
 			
-//			String query = 	"select distinct t from Team t join fetch t.members" ;
+			//alias를 사용하는 방법
+//			String query = 	"select t from Team t join fetch t.members m join fetch m.team" ;
 //			
 //			List<Team> result = em.createQuery(query, Team.class)
 //			.getResultList();
@@ -95,11 +72,13 @@ public class JpaMain {
 //				}
 //			}
 			
-//			//페치 조인과 일반 조인의 차이
-//			String query = 	"select t from Team t join t.members m" ;
+			//컬렉션 페치 조인시 페이징 API 사용 금지
+//			String query = 	"select t from Team t join fetch t.members m" ;
 //			
 //			List<Team> result = em.createQuery(query, Team.class)
-//			.getResultList();
+//					.setFirstResult(0)
+//					.setMaxResults(1)
+//					.getResultList();
 //			
 //			for(Team team : result) {
 //				System.out.println("member = " + team.getName() + ", " + team.getMembers().size());
@@ -108,10 +87,19 @@ public class JpaMain {
 //				}
 //			}
 			
-			String query = 	"select t from Team t join t.members m" ;
+			//다대일로 쿼리를 짜서 페이징 API 사용
+//			String query = 	"select m from Member m join fetch m.team t" ;
+
+			//Team 엔티티에서 members 콜렉션에 batchsize 어노테이션 지정
+			//persistence.xml의 batchsize 지정
+//			String query = 	"select t from Team t" ;
+
+			String query = 	"select t from Team t" ;
 			
 			List<Team> result = em.createQuery(query, Team.class)
-			.getResultList();
+					.setFirstResult(0)
+					.setMaxResults(2)
+					.getResultList();
 			
 			for(Team team : result) {
 				System.out.println("member = " + team.getName() + ", " + team.getMembers().size());
