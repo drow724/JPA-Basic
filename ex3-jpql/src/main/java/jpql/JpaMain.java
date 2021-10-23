@@ -1,11 +1,10 @@
 package jpql;
 
-import java.util.List;
+import java.util.Collection;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.OrderColumn;
 import javax.persistence.Persistence;
 
 public class JpaMain {
@@ -22,32 +21,23 @@ public class JpaMain {
 		try {
 				
 			Team team = new Team();
-			team.setName("teamA");
 			em.persist(team);
 			
 			Member member = new Member();
-			member.setUsername(null);
-			member.setAge(10);
-			member.setType(MemberType.ADMIN);
+			member.setUsername("관리자");
+			member.setTeam(team);
 			
 			em.persist(member);
 		
 			em.flush();
 			em.clear();
-		
-//			String query = 	"select concat('a', 'b') as username from Member m";
-//			String query = 	"select substring(m.username, 2,3) as username from Member m";
-//			String query = 	"select locate('de', 'abcdefg') as username from Member m";
-//			String query = 	"select size(t.members) from Team t";
-//			String query = 	"select function('group_concat', m.username) from Member m";
 			
-			String query = 	"select group_concat(m.username) from Member m";
-			List<String> result = em.createQuery(query, String.class)
+			String query = 	"select m.username from Team t join t.members m";
+			
+			Collection result = em.createQuery(query, Collection.class)
 			.getResultList();
 			
-			for(String s : result){
-				System.out.println("s = " + s);
-			}
+			System.out.println(result);
 			
 			tx.commit();
 		} catch (Exception e) {
