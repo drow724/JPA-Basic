@@ -45,32 +45,13 @@ public class JpaMain {
 			
 			em.flush();
 			em.clear();
-
-			//Id값 조회
-//			String query = 	"select m from Member m where m.id = :memberId";
-//			
-//			Member findMember = em.createQuery(query, Member.class)
-//					.setParameter("member", member1.getId())
-//					.getSingleResult();
 			
-			//엔티티 조회와 Id값 조회는 값이 같다
-//			String query = 	"select m from Member m where m = :member";
-//			
-//			Member findMember = em.createQuery(query, Member.class)
-//					.setParameter("member", member1)
-//					.getSingleResult();
-//			
-//			System.out.println("findMember = " + findMember);
+			List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
+				.setParameter("username", "관리자")
+				.getResultList();
 			
-			//외래 키 사용도 마찬가지
-			String query = 	"select m from Member m where m.team = :team";
-			
-			List<Member> findMember = em.createQuery(query, Member.class)
-					.setParameter("team", teamA)
-					.getResultList();
-			
-			for(Member member : findMember) {
-				System.out.println(member);
+			for(Member member : resultList) {
+				System.out.println("member = " + member);
 			}
 			
 			tx.commit();
