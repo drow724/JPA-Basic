@@ -46,25 +46,31 @@ public class JpaMain {
 			em.flush();
 			em.clear();
 
-			//TYPE
-			//조회 대상을 특정 자식으로 한정
-//			String query = 	"select i from Item i where type(i) IN (Book, Movie)" ;
+			//Id값 조회
+//			String query = 	"select m from Member m where m.id = :memberId";
+//			
+//			Member findMember = em.createQuery(query, Member.class)
+//					.setParameter("member", member1.getId())
+//					.getSingleResult();
 			
-			//TREAT
-			//상속 구조에서 부모 타입을 특정 자식 타입으로 다룰 때 사용
-			String query = 	"select i from Item i where treat(i as Book).auther = ‘kim’"
-					+ "" ;
+			//엔티티 조회와 Id값 조회는 값이 같다
+//			String query = 	"select m from Member m where m = :member";
+//			
+//			Member findMember = em.createQuery(query, Member.class)
+//					.setParameter("member", member1)
+//					.getSingleResult();
+//			
+//			System.out.println("findMember = " + findMember);
 			
-			List<Team> result = em.createQuery(query, Team.class)
-					.setFirstResult(0)
-					.setMaxResults(2)
+			//외래 키 사용도 마찬가지
+			String query = 	"select m from Member m where m.team = :team";
+			
+			List<Member> findMember = em.createQuery(query, Member.class)
+					.setParameter("team", teamA)
 					.getResultList();
 			
-			for(Team team : result) {
-				System.out.println("member = " + team.getName() + ", " + team.getMembers().size());
-				for(Member member : team.getMembers()) {
-					System.out.println("member = " + member);
-				}
+			for(Member member : findMember) {
+				System.out.println(member);
 			}
 			
 			tx.commit();
